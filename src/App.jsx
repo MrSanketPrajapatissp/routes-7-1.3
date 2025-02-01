@@ -1,59 +1,55 @@
-import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
-import { Suspense, lazy } from "react";
-const Dashboard = lazy(() => import("./components/Dashboard"));
-const Landing = lazy(() => import("./components/Landing"));
+import { useContext, useState } from "react";
+import { CountContext } from "./context";
 
 function App() {
+  const [count, setCount] = useState(0);
+
   return (
     <div>
-      <BrowserRouter>
-        <Appbar />
-        <Routes>
-          <Route
-            path="/dashboard"
-            element={
-              <Suspense fallback="...Loading">
-                <Dashboard />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/"
-            element={
-              <Suspense fallback="...loading">
-                <Landing />
-              </Suspense>
-            }
-          />
-        </Routes>
-      </BrowserRouter>
+      <CountContext.Provider value={count}>
+        <Count setCount={setCount} />
+      </CountContext.Provider>
     </div>
   );
 }
 
-function Appbar() {
-  const navigate = useNavigate();
-
+function Count({ setCount }) {
   return (
-    <>
-      <div>
-        <button
-          onClick={function () {
-            navigate("/");
-          }}
-        >
-          Landing Page
-        </button>
-        <button
-          onClick={function () {
-            navigate("/dashboard");
-          }}
-        >
-          Dashboard Page
-        </button>
-      </div>
-    </>
+    <div>
+      <CountRenderer />
+      <Buttons setCount={setCount}></Buttons>
+    </div>
   );
 }
 
+function CountRenderer() {
+  const count = useContext(CountContext);
+
+  return <div>{count}</div>;
+}
+
+function Buttons({ setCount }) {
+  const count = useContext(CountContext);
+
+  return (
+    <div>
+      <button
+        onClick={function () {
+          setCount(count + 1);
+        }}
+      >
+        {" "}
+        Incresae
+      </button>
+      <button
+        onClick={function () {
+          setCount(count - 1);
+        }}
+      >
+        {" "}
+        Decrease
+      </button>
+    </div>
+  );
+}
 export default App;
