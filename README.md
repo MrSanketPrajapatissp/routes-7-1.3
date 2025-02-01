@@ -1,8 +1,83 @@
-# React + Vite
+# Context API
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Output of the code: 
 
-Currently, two official plugins are available:
+![Screenshot (472)](https://github.com/user-attachments/assets/e8336cab-919d-490a-a915-2f5776d0b59f)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+
+
+
+## code for Context API below is App.jsx file
+
+```import { useContext, useState } from "react";
+import { CountContext } from "./context";
+
+function App() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <div>
+      <CountContext.Provider value={count}>
+        <Count setCount={setCount} />
+      </CountContext.Provider>
+    </div>
+  );
+}
+
+function Count({ setCount }) {
+  return (
+    <div>
+      <CountRenderer />
+      <Buttons setCount={setCount}></Buttons>
+    </div>
+  );
+}
+
+function CountRenderer() {
+  const count = useContext(CountContext);
+
+  return <div>{count}</div>;
+}
+
+function Buttons({ setCount }) {
+  const count = useContext(CountContext);
+
+  return (
+    <div>
+      <button
+        onClick={function () {
+          setCount(count + 1);
+        }}
+      >
+        {" "}
+        Incresae
+      </button>
+      <button
+        onClick={function () {
+          setCount(count - 1);
+        }}
+      >
+        {" "}
+        Decrease
+      </button>
+    </div>
+  );
+}
+export default App;
+
+```
+
+
+## context.jsx 
+```
+import { createContext } from "react";
+
+export const CountContext = createContext(0);
+
+````
+## Contributing
+
+Pull requests are welcome. For major changes, please open an issue first
+to discuss what you would like to change.
+
+Please make sure to update tests as appropriate.
